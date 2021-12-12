@@ -56,7 +56,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
                     borderRadius: BorderRadius.circular(5)
                   ),
                   child: Center(
-                      child: Text("A word to remember")
+                      child: Text("der Tisch")
                   ),
                 ),
                 back: Card(
@@ -64,8 +64,16 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
                   shape: BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(5)
                   ),
-                  child: Center(
-                      child: Text("Explanation of that word")
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          child: Text("Table : a flat surface, usually supported by four legs, used for putting things on", textAlign: TextAlign.center,),
+                        ),
+                        Image.asset('lib/assets/masa.jpg',height: 120, width: 120, alignment: Alignment.bottomCenter),
+                        Icon(Icons.volume_up_rounded)],
+
                   ),
                 )
             ),
