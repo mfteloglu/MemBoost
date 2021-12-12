@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Container(
             //padding: const EdgeInsets.all(10.0),
             margin: const EdgeInsets.only(top: 15.0),
-            child: Image.asset("assets/images/user-photo.png",
+            child: Image.asset("lib/assets/images/user-photo.png",
                 height: 50, fit: BoxFit.fill),
           ),
           Container(
