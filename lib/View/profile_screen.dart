@@ -14,19 +14,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Profile",
-          style: TextStyle(color: Colors.black87),
-        ),
+        // title: const Text(
+        //   "Profile",
+        //   style: TextStyle(color: Colors.black87),
+        // ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(20.0),
-            margin: const EdgeInsets.only(top: 30.0),
+            //padding: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.only(top: 15.0),
+            child: Image.asset("assets/images/user-photo.png",
+                height: 50, fit: BoxFit.fill),
+          ),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            //margin: const EdgeInsets.only(top: 30.0),
+            child: const Text(
+              "Name Surname",
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 30.0),
+            //margin: const EdgeInsets.only(top: 30.0),
+            child: const Text(
+              "Heatmap",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            //padding: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.only(bottom: 10.0),
             child: const HeatMap(),
           ),
           Container(
@@ -77,8 +100,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(fontSize: 16),
             ),
           ),
+          Container(
+              padding: const EdgeInsets.all(20.0),
+              //margin: const EdgeInsets.only(top: 30.0),
+              child: OutlinedButton(
+                onPressed: () {
+                  debugPrint('Received click to MANAGE SUBSCRIPTION button');
+                },
+                child: const Text('MANAGE SUBSCRIPTION'),
+              )),
         ],
-      ),
+      )),
       extendBodyBehindAppBar: true,
     );
   }
