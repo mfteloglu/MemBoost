@@ -12,10 +12,15 @@ class MemBoostApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'MemBoost', home: HomePage(), theme: ThemeData(
-      brightness: Brightness.light,
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange)
-    ));
+    return MaterialApp(
+        title: 'MemBoost',
+        home: HomePage(),
+        theme: ThemeData(
+            brightness: Brightness.light,
+            colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.deepOrange,
+                accentColor: Colors.deepOrangeAccent,
+                brightness: Brightness.light)));
   }
 }
 
@@ -30,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
-  final homePageIconSize = 20.0;
+  static const homePageIconSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +53,32 @@ class _HomePageState extends State<HomePage> {
         drawer: Drawer(
             child: ListView(
           padding: EdgeInsets.zero,
-          children: const <Widget>[
+          children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Theme.of(context).colorScheme.primary,
               ),
-              child: Text(
-                'Drawer Header',
+              child: const Text(
+                'MemBoost',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                 ),
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Messages'),
+            const ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
             ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
+            const ListTile(
+              leading: Icon(Icons.help),
+              title: Text('Help'),
             ),
-            ListTile(
+            const ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About'),
+            ),
+            const ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
             ),
@@ -116,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 label: "Profile")
           ],
           onTap: _onTappedBar,
-          selectedItemColor: Colors.blue,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           currentIndex: _selectedIndex,
         ));
   }

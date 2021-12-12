@@ -17,14 +17,20 @@ class _ManageDecksScreenState extends State<ManageDecksScreen> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: const [
-              TabBar(tabs: [Tab(text: "My Decks"), Tab(text: "Browse Decks")]),
-            ],
-          )),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TabBar(
+                      indicatorColor: Theme.of(context).colorScheme.secondary,
+                      tabs: const [
+                        Tab(text: "My Decks"),
+                        Tab(text: "Browse Decks")
+                      ]),
+                ],
+              )),
           body: TabBarView(
-            children: [MyDecksTab(), BrowseDecksTab()],
+            children: [MyDecksTab(), const BrowseDecksTab()],
           ),
         ));
   }
@@ -38,6 +44,8 @@ class MyDecksTab extends StatefulWidget {
 }
 
 class _MyDecksTab extends State<MyDecksTab> {
+  final isServer = false;
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -46,44 +54,19 @@ class _MyDecksTab extends State<MyDecksTab> {
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
       children: [
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
-        Deck(),
+        Deck("German 101", isServer),
+        Deck("English Words", isServer),
+        Deck("Bones", isServer),
+        Deck("Muscles", isServer),
+        Deck("German Animals", isServer),
       ],
     );
   }
 }
 
 class BrowseDecksTab extends StatefulWidget {
+  const BrowseDecksTab({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _BrowseDecksTab();
@@ -91,55 +74,39 @@ class BrowseDecksTab extends StatefulWidget {
 }
 
 class _BrowseDecksTab extends State<BrowseDecksTab> {
+  final isServer = true;
+
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      GridView.count(
-          padding: const EdgeInsets.all(10),
-          crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          children: [
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-            Deck(),
-          ]),
-      buildFloatingSearchBar()
-    ]);
+    return Container(
+        child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+          SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
+          Expanded(
+            child: GridView.count(
+                padding: const EdgeInsets.all(10),
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: [
+                  Deck("English Words", isServer),
+                  Deck("Bones", isServer),
+                  Deck("Muscles", isServer),
+                  Deck("German Animals", isServer),
+                  Deck("Tree Names", isServer),
+                  Deck("Organs", isServer),
+                  Deck("Bacterias", isServer),
+                  Deck("Spanish furniture", isServer),
+                ]),
+          )
+        ]));
   }
 }
 
 Widget buildFloatingSearchBar() {
-  final isPortrait = true;
+  const isPortrait = true;
 
   return FloatingSearchBar(
     hint: 'Search...',
@@ -161,7 +128,7 @@ Widget buildFloatingSearchBar() {
       FloatingSearchBarAction(
         showIfOpened: false,
         child: CircularButton(
-          icon: const Icon(Icons.place),
+          icon: const Icon(Icons.search),
           onPressed: () {},
         ),
       ),
@@ -188,11 +155,26 @@ Widget buildFloatingSearchBar() {
 }
 
 class Deck extends StatelessWidget {
+  const Deck(this.text, this.isServer, {Key? key}) : super(key: key);
+  final String text;
+  final bool isServer;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: const Text("Deck"),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(text),
+            Expanded(
+                child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: isServer
+                        ? const Icon(Icons.download)
+                        : const Icon(Icons.settings)))
+          ]),
       color: Colors.teal[100],
     );
   }
