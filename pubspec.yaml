@@ -32,6 +32,7 @@ dependencies:
   flip_card: ^0.6.0 # to flip the flashcard
   flutter_tindercard: ^0.2.0 # to swipte hte flashcards
 
+  material_floating_search_bar: ^0.3.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

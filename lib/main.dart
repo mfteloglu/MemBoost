@@ -4,11 +4,11 @@ import 'package:memboost/View/profile_screen.dart';
 import 'package:memboost/View/review_deck_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MemBoostApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class MemBoostApp extends StatelessWidget {
+  MemBoostApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,39 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Go!'),
       ),
+      drawer: Drawer(
+          child: ListView(
+        padding: EdgeInsets.zero,
+        children: const <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text(
+              'Drawer Header',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Profile'),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+        ],
+      )),
       body: PageView(
         scrollDirection: Axis.horizontal,
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: (page) {
           setState(() {
