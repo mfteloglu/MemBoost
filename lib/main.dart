@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:memboost/View/manage_decks_screen.dart';
 import 'package:memboost/View/profile_screen.dart';
 import 'package:memboost/View/review_deck_screen.dart';
-
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'Model/Model.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MemBoostApp());
 }
 

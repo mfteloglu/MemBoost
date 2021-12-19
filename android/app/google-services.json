@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "120565288365",
+    "project_id": "memboost-affa7",
+    "storage_bucket": "memboost-affa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120565288365:android:2a537828267eb95d436524",
+        "android_client_info": {
+          "package_name": "com.memboost.memboost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120565288365-dtl1vbh26qqghpdu49fc6hv4lau9j73m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOEIezIX89WP7RxPXEQx2wWK0RA9vaxWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120565288365-dtl1vbh26qqghpdu49fc6hv4lau9j73m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

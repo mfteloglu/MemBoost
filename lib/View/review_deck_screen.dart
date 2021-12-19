@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:memboost/Model/Model.dart';
 
 class ReviewDeckScreen extends StatefulWidget {
   const ReviewDeckScreen({Key? key}) : super(key: key);
@@ -104,9 +105,11 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
               if (orientation != CardSwipeOrientation.RECOVER) {
                 setState(() {
                   counter++;
+                  writeToFireStore(); // firestore testing
+
                 });
               }
-              print(orientation);
+              //print(orientation);
 
               /// Get orientation & index of swiped card!
             },
