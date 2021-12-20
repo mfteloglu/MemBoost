@@ -29,14 +29,16 @@ class _ManageDecksScreenState extends State<ManageDecksScreen> {
                       ]),
                 ],
               )),
-          body: TabBarView(
-            children: [MyDecksTab(), const BrowseDecksTab()],
+          body: const TabBarView(
+            children: [MyDecksTab(), BrowseDecksTab()],
           ),
         ));
   }
 }
 
 class MyDecksTab extends StatefulWidget {
+  const MyDecksTab({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _MyDecksTab();
@@ -78,11 +80,10 @@ class _BrowseDecksTab extends State<BrowseDecksTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
           Expanded(
             child: GridView.count(
@@ -101,7 +102,7 @@ class _BrowseDecksTab extends State<BrowseDecksTab> {
                   Deck("Spanish furniture", isServer),
                 ]),
           )
-        ]));
+        ]);
   }
 }
 
