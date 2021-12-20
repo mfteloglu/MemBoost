@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:memboost/Model/google_sign_in.dart';
 import 'package:memboost/View/login_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,14 +15,16 @@ class MemBoostApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'MemBoost',
-        home: LoginScreen(),
-        theme: ThemeData(
-            brightness: Brightness.light,
-            colorScheme: ColorScheme.fromSwatch(
-                primarySwatch: Colors.deepOrange,
-                accentColor: Colors.deepOrangeAccent,
-                brightness: Brightness.light)));
+    return ChangeNotifierProvider(
+        create: (context) => GoogleSignInProvider(),
+        child: MaterialApp(
+            title: 'MemBoost',
+            home: LoginScreen(),
+            theme: ThemeData(
+                brightness: Brightness.light,
+                colorScheme: ColorScheme.fromSwatch(
+                    primarySwatch: Colors.deepOrange,
+                    accentColor: Colors.deepOrangeAccent,
+                    brightness: Brightness.light))));
   }
 }

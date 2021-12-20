@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:memboost/Model/google_sign_in.dart';
 import 'home_screen.dart';
 import 'package:sign_button/sign_button.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -46,10 +48,10 @@ class LoginScreen extends StatelessWidget {
                   SignInButton(
                     buttonType: ButtonType.google,
                     onPressed: () {
-                      Navigator.push(
+                      final provider = Provider.of<GoogleSignInProvider>(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                          listen: false);
+                      provider.googleLogin();
                     },
                   ),
                   SignInButton(
