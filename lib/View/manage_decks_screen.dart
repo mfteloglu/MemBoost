@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:memboost/Model/Model.dart';
+import 'package:memboost/ClassModels/deck.dart';
+import 'package:memboost/ViewModel/decks_view_model.dart';
+import 'package:provider/provider.dart';
 
 class ManageDecksScreen extends StatefulWidget {
   const ManageDecksScreen({Key? key}) : super(key: key);
@@ -57,22 +60,32 @@ class _MyDecksTab extends State<MyDecksTab> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
+  List<DeckTileDownloaded> decks = [];
+
+  void buildDeckTilesFromDecks(List<Deck> deckModels) {
+    decks = [];
+    for (var deckModel in deckModels) {
+      decks.add(DeckTileDownloaded(
+        deckModel,
+        key: UniqueKey(),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GridView.count(
-      padding: const EdgeInsets.all(10),
-      crossAxisCount: 3,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      children: [
-        Deck("German 101", isServer),
-        Deck("English Words", isServer),
-        Deck("Bones", isServer),
-        Deck("Muscles", isServer),
-        Deck("German Animals", isServer),
-      ],
-    );
+    Provider.of<DecksViewModel>(context, listen: false).getDownloadedDecks();
+    return Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+      buildDeckTilesFromDecks(viewModel.downloadedDecks);
+      return GridView.count(
+        padding: const EdgeInsets.all(10),
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: [...decks],
+      );
+    });
   }
 }
 
@@ -92,44 +105,33 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
   @override
   bool get wantKeepAlive => true;
 
-  // fetch all decks from storage
-  List<String> allDecks = [];
-
-  initState() {
-    startAsyncInit();
-  }
-
-  Future startAsyncInit() async {
-    allDecks = await listAllDecks();
-  }
+  List<String> decks = [];
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    Provider.of<DecksViewModel>(context, listen: false)
+        .getListOfDecksOnServer();
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
-          Expanded(
-            child: GridView.count(
-                padding: const EdgeInsets.all(10),
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                children: [
-                  for (var i in allDecks) Deck('${i.toString()}', isServer),
-                  // list all decks in storage
-                  Deck("English Words", isServer),
-                  Deck("Bones", isServer),
-                  Deck("Muscles", isServer),
-                  Deck("German Animals", isServer),
-                  Deck("Tree Names", isServer),
-                  Deck("Organs", isServer),
-                  Deck("Bacterias", isServer),
-                  Deck("Spanish furniture", isServer),
-                ]),
-          )
+          Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+            decks = viewModel.decksOnServer;
+            return Expanded(
+              child: GridView.count(
+                  padding: const EdgeInsets.all(10),
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  children: [
+                    for (var deck in decks)
+                      DeckTileOnBackend(deck.toString(), key: UniqueKey()),
+                    // list all decks in storage
+                  ]),
+            );
+          })
         ]);
   }
 }
@@ -183,10 +185,9 @@ Widget buildFloatingSearchBar() {
   );
 }
 
-class Deck extends StatelessWidget {
-  const Deck(this.text, this.isServer, {Key? key}) : super(key: key);
-  final String text;
-  final bool isServer;
+class DeckTileDownloaded extends StatelessWidget {
+  const DeckTileDownloaded(this.deck, {Key? key}) : super(key: key);
+  final Deck deck;
 
   @override
   Widget build(BuildContext context) {
@@ -196,13 +197,48 @@ class Deck extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(text),
+            Text(deck.name!),
             Expanded(
                 child: Align(
                     alignment: Alignment.bottomRight,
-                    child: isServer
-                        ? const Icon(Icons.download)
-                        : const Icon(Icons.settings)))
+                    child: IconButton(
+                      alignment: Alignment.bottomRight,
+                      icon: const Icon(Icons.settings),
+                      onPressed: () {
+                        Provider.of<DecksViewModel>(context, listen: false)
+                            .deleteDeck(deck.name!);
+                      },
+                    )))
+          ]),
+      color: Colors.teal[100],
+    );
+  }
+}
+
+class DeckTileOnBackend extends StatelessWidget {
+  const DeckTileOnBackend(this.name, {Key? key}) : super(key: key);
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(name),
+            Expanded(
+                child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
+                      alignment: Alignment.bottomRight,
+                      icon: const Icon(Icons.download),
+                      onPressed: () {
+                        Provider.of<DecksViewModel>(context, listen: false)
+                            .downloadDeck(name);
+                      },
+                    )))
           ]),
       color: Colors.teal[100],
     );

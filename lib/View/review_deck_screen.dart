@@ -121,7 +121,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                   Flashcard card2 =
                       Flashcard("Pencil", "something about pencil", 333, 444);
                   List<Flashcard> cardlist = [card1, card2];
-                  Deck english101 = Deck("English 101", "Matiaz", cardlist);
+                  DeckModel english101 = DeckModel("English 101", "Matiaz", cardlist);
                   //print(english101.toJson());
                 });
               }

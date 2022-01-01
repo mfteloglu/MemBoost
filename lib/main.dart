@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:memboost/Model/google_sign_in.dart';
 import 'package:memboost/View/login_screen.dart';
+import 'package:memboost/ViewModel/decks_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize();
@@ -16,8 +18,13 @@ class MemBoostApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => GoogleSignInProvider(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => GoogleSignInProvider(),
+          ),
+          ChangeNotifierProvider(create: (context) => DecksViewModel())
+        ],
         child: MaterialApp(
             title: 'MemBoost',
             home: LoginScreen(),
