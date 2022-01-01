@@ -5,7 +5,14 @@ import 'package:memboost/ClassModels/deck.dart';
 class DecksViewModel extends ChangeNotifier {
   late List<Deck> downloadedDecks = [];
   late List<String> decksOnServer = [];
+  Deck? currentSelectedDeck;
+
   DeckModel model = DeckModel();
+
+  void selectDeckToBeReviewed(Deck deck) {
+    currentSelectedDeck = deck;
+    notifyListeners();
+  }
 
   void getDownloadedDecks() async {
     downloadedDecks = await model.getAllDecksFromStorage();
@@ -29,6 +36,13 @@ class DecksViewModel extends ChangeNotifier {
 
   void deleteDeck(String name) async {
     await model.deleteDeckFromStorage(name + ".json");
+    if(name == currentSelectedDeck?.name) {
+      if (downloadedDecks.isNotEmpty) {
+        currentSelectedDeck = downloadedDecks.first;
+      } else {
+        currentSelectedDeck = null;
+      }
+    }
     getDownloadedDecks();
   }
 }

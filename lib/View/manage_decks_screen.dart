@@ -201,13 +201,25 @@ class DeckTileDownloaded extends StatelessWidget {
             Expanded(
                 child: Align(
                     alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      alignment: Alignment.bottomRight,
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        Provider.of<DecksViewModel>(context, listen: false)
-                            .deleteDeck(deck.name!);
-                      },
+                    child: Row(
+                      children: [
+                        IconButton(
+                          alignment: Alignment.bottomRight,
+                          icon: const Icon(Icons.select_all),
+                          onPressed: () {
+                            Provider.of<DecksViewModel>(context, listen: false)
+                                .selectDeckToBeReviewed(deck);
+                          },
+                        ),
+                        IconButton(
+                          alignment: Alignment.bottomRight,
+                          icon: const Icon(Icons.settings),
+                          onPressed: () {
+                            Provider.of<DecksViewModel>(context, listen: false)
+                                .deleteDeck(deck.name!);
+                          },
+                        )
+                      ],
                     )))
           ]),
       color: Colors.teal[100],
