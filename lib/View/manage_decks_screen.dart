@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:memboost/Model/Model.dart';
 
-
 class ManageDecksScreen extends StatefulWidget {
   const ManageDecksScreen({Key? key}) : super(key: key);
 
@@ -12,9 +11,14 @@ class ManageDecksScreen extends StatefulWidget {
   }
 }
 
-class _ManageDecksScreenState extends State<ManageDecksScreen> {
+class _ManageDecksScreenState extends State<ManageDecksScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -47,13 +51,15 @@ class MyDecksTab extends StatefulWidget {
   }
 }
 
-class _MyDecksTab extends State<MyDecksTab> {
+class _MyDecksTab extends State<MyDecksTab> with AutomaticKeepAliveClientMixin {
   final isServer = false;
 
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-
+    super.build(context);
     return GridView.count(
       padding: const EdgeInsets.all(10),
       crossAxisCount: 3,
@@ -79,20 +85,27 @@ class BrowseDecksTab extends StatefulWidget {
   }
 }
 
-class _BrowseDecksTab extends State<BrowseDecksTab> {
+class _BrowseDecksTab extends State<BrowseDecksTab>
+    with AutomaticKeepAliveClientMixin {
   final isServer = true;
+
+  @override
+  bool get wantKeepAlive => true;
 
   // fetch all decks from storage
   List<String> allDecks = [];
+
   initState() {
     startAsyncInit();
   }
-  Future startAsyncInit() async{
+
+  Future startAsyncInit() async {
     allDecks = await listAllDecks();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,7 +118,8 @@ class _BrowseDecksTab extends State<BrowseDecksTab> {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 children: [
-                  for ( var i in allDecks ) Deck('${i.toString()}', isServer), // list all decks in storage
+                  for (var i in allDecks) Deck('${i.toString()}', isServer),
+                  // list all decks in storage
                   Deck("English Words", isServer),
                   Deck("Bones", isServer),
                   Deck("Muscles", isServer),
