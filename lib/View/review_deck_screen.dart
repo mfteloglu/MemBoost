@@ -107,6 +107,18 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
                   counter++;
                   writeToFireStore(); // firestore testing
 
+                  downloadDeck("GERMAN101.json");
+                  readFromStorage("GERMAN101.json");
+
+
+                  Flashcard card1 = Flashcard("Desk", "something about desk", 111, 222);
+                  Flashcard card2 = Flashcard("Pencil", "something about pencil", 333, 444);
+                  List<Flashcard> cardlist = [card1, card2];
+                  Deck english101 = Deck("English 101", "Matiaz", cardlist);
+                  //print(english101.toJson());
+
+
+
                 });
               }
               //print(orientation);

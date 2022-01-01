@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "120565288365-64puj6i1b5qg16uqk0n96ah5q2c5i7km.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.memboost.memboost",
+            "certificate_hash": "c517e49e626bf2cc31d26c798d3849fffb1995cc"
+          }
+        },
+        {
           "client_id": "120565288365-dtl1vbh26qqghpdu49fc6hv4lau9j73m.apps.googleusercontent.com",
           "client_type": 3
         }
