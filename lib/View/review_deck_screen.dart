@@ -12,13 +12,19 @@ class ReviewDeckScreen extends StatefulWidget {
   }
 }
 
-class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
+class _ReviewDeckScreenState extends State<ReviewDeckScreen>
+    with AutomaticKeepAliveClientMixin {
   var numOfCards = 10;
   var counter = 1;
   var nameOfDeck = "GERMAN 101 DECK";
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     CardController controller; //Use this to trigger swap.
     return Scaffold(
       backgroundColor: Colors.teal[100],
@@ -107,6 +113,16 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen> {
                   counter++;
                   writeToFireStore(); // firestore testing
 
+                  downloadDeck("GERMAN101.json");
+                  readFromStorage("GERMAN101.json");
+
+                  Flashcard card1 =
+                      Flashcard("Desk", "something about desk", 111, 222);
+                  Flashcard card2 =
+                      Flashcard("Pencil", "something about pencil", 333, 444);
+                  List<Flashcard> cardlist = [card1, card2];
+                  DeckModel english101 = DeckModel("English 101", "Matiaz", cardlist);
+                  //print(english101.toJson());
                 });
               }
               //print(orientation);
