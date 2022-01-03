@@ -28,20 +28,34 @@ class Deck {
 }
 
 class Flashcard {
-  String? word;
-  String? explanation;
-  int? ease;
-  int? date;
+  String? word; // front of the card
+  String? explanation; // back of the car
+  String? status =
+      "first"; // can be "first", "second", "third", "learning", "relearning1", "relearning2" or "matured"
+  double ease = 2.5; // cards start with the ease of 250%
+  DateTime? date; // the date that the card will be shown to the user
+  int?
+      afterXMinutes; // this value is needed for the cards that are in the "first", "second", "third", "learning" and "relearning" phase, after this much minutes the user will see the card again
+  int? scheduledDay;
+  int? scheduledMonth;
+  int? scheduledYear;
+  int currentIntervalDays = 1;
 
   // constructor
-  Flashcard(this.word, this.explanation, this.ease, this.date);
+  Flashcard(this.word, this.explanation, this.date);
 
   // json read
   Flashcard.fromJson(Map<String, dynamic> json) {
     word = json['word'];
     explanation = json['explanation'];
+    status = json['status'];
     ease = json['ease'];
     date = json['date'];
+    afterXMinutes = json['afterXMinutes'];
+    scheduledDay = json['scheduledDay'];
+    scheduledMonth = json['scheduledMonth'];
+    scheduledYear = json['scheduledYear'];
+    currentIntervalDays = json['currentIntervalDays'];
   }
 
   // json write
@@ -49,8 +63,89 @@ class Flashcard {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['word'] = word;
     data['explanation'] = explanation;
+    data['status'] = status;
     data['ease'] = ease;
     data['date'] = date;
+    data['afterXMinutes'] = afterXMinutes;
+    data['scheduledDay'] = scheduledDay;
+    data['scheduledMonth'] = scheduledMonth;
+    data['scheduledYear'] = scheduledYear;
+    data['currentIntervalDays'] = currentIntervalDays;
     return data;
+  }
+
+  // this method will be called when the user presses the good button or swipes the card to the positive side
+  void onButtonGood() {
+    // if the card is in the first learning phase
+    if (status == "first") {
+      status = "second";
+      afterXMinutes = 1;
+    }
+    // if the card is in the second learning phase
+    else if (status == "second") {
+      status = "third";
+      afterXMinutes = 5;
+    }
+    // if the card is in the third learning phase
+    else if (status == "third") {
+      status = "young";
+      afterXMinutes = 60;
+    }
+    // if the card is in the young phase
+    else if (status == "young") {
+      status = "matured";
+      var today = DateTime.now();
+      date = today.add(const Duration(days: 1));
+      scheduledDay = date?.day;
+      scheduledMonth = date?.month;
+      scheduledYear = date?.year;
+    }
+    // if the card is in the matured phase
+    else if (status == "matured") {
+      var today = DateTime.now();
+      date =
+          today.add(Duration(days: (ease * 1.15 * currentIntervalDays).ceil()));
+      scheduledDay = date?.day;
+      scheduledMonth = date?.month;
+      scheduledYear = date?.year;
+    }
+    // if the card is in the relearning1 phase
+    else if (status == "relearning1") {
+      status = "relearning2";
+      afterXMinutes = 60;
+    }
+    // if the card is in the relearning2 phase
+    else if (status == "relearning2") {
+      status = "matured";
+      var today = DateTime.now();
+      date = today.add(Duration(days: (currentIntervalDays * 0.2).ceil()));
+      scheduledDay = date?.day;
+      scheduledMonth = date?.month;
+      scheduledYear = date?.year;
+    }
+  }
+
+  // this method will be called when the user presses the again button or swipes to the negative side
+  void onButtonAgain() {
+    if (status == "first") {
+      afterXMinutes = 1;
+    } else if (status == "second") {
+      status = "first";
+      afterXMinutes = 1;
+    } else if (status == "third") {
+      status = "first";
+      afterXMinutes = 1;
+    } else if (status == "young") {
+      status = "first";
+      afterXMinutes = 1;
+    } else if (status == "matured") {
+      status = "relearning1";
+      afterXMinutes = 1;
+    } else if (status == "relearning1") {
+      afterXMinutes = 1;
+    } else if (status == "relearning2") {
+      status = "relearning1";
+      afterXMinutes = 1;
+    }
   }
 }
