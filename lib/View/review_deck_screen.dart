@@ -126,7 +126,9 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                   /// Get swiping card's alignment
                   if (align.x < 0) {
                     //Card is LEFT swiping
+                    debugPrint("swiped left");
                   } else if (align.x > 0) {
+                    debugPrint("swiped right");
                     //Card is RIGHT swiping
                   }
                 },

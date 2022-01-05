@@ -30,10 +30,10 @@ class Deck {
 class Flashcard {
   String? word; // front of the card
   String? explanation; // back of the car
-  String? status =
+  String status =
       "first"; // can be "first", "second", "third", "learning", "relearning1", "relearning2" or "matured"
-  double ease = 2.5; // cards start with the ease of 250%
-  DateTime? date; // the date that the card will be shown to the user
+  num ease = 2.5; // cards start with the ease of 250%
+  // DateTime? date; // the date that the card will be shown to the user
   int?
       afterXMinutes; // this value is needed for the cards that are in the "first", "second", "third", "learning" and "relearning" phase, after this much minutes the user will see the card again
   int? scheduledDay;
@@ -42,7 +42,7 @@ class Flashcard {
   int currentIntervalDays = 1;
 
   // constructor
-  Flashcard(this.word, this.explanation, this.date);
+  Flashcard(this.word, this.explanation);
 
   // json read
   Flashcard.fromJson(Map<String, dynamic> json) {
@@ -50,7 +50,7 @@ class Flashcard {
     explanation = json['explanation'];
     status = json['status'];
     ease = json['ease'];
-    date = json['date'];
+    // date = json['date'];
     afterXMinutes = json['afterXMinutes'];
     scheduledDay = json['scheduledDay'];
     scheduledMonth = json['scheduledMonth'];
@@ -65,7 +65,7 @@ class Flashcard {
     data['explanation'] = explanation;
     data['status'] = status;
     data['ease'] = ease;
-    data['date'] = date;
+    // data['date'] = date;
     data['afterXMinutes'] = afterXMinutes;
     data['scheduledDay'] = scheduledDay;
     data['scheduledMonth'] = scheduledMonth;
@@ -95,19 +95,19 @@ class Flashcard {
     else if (status == "young") {
       status = "matured";
       var today = DateTime.now();
-      date = today.add(const Duration(days: 1));
-      scheduledDay = date?.day;
-      scheduledMonth = date?.month;
-      scheduledYear = date?.year;
+      var newDate = today.add(const Duration(days: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
     }
     // if the card is in the matured phase
     else if (status == "matured") {
       var today = DateTime.now();
-      date =
+      var newDate =
           today.add(Duration(days: (ease * 1.15 * currentIntervalDays).ceil()));
-      scheduledDay = date?.day;
-      scheduledMonth = date?.month;
-      scheduledYear = date?.year;
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
     }
     // if the card is in the relearning1 phase
     else if (status == "relearning1") {
@@ -118,10 +118,11 @@ class Flashcard {
     else if (status == "relearning2") {
       status = "matured";
       var today = DateTime.now();
-      date = today.add(Duration(days: (currentIntervalDays * 0.2).ceil()));
-      scheduledDay = date?.day;
-      scheduledMonth = date?.month;
-      scheduledYear = date?.year;
+      var newDate =
+          today.add(Duration(days: (currentIntervalDays * 0.2).ceil()));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
     }
   }
 
