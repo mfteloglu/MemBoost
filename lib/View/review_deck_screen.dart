@@ -73,6 +73,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 minWidth: MediaQuery.of(context).size.width * 0.8,
                 minHeight: MediaQuery.of(context).size.width * 0.8,
                 cardBuilder: (context, index) => FlipCard(
+                    key: Key('flip$index'),
                     direction: FlipDirection.VERTICAL,
                     front: Card(
                       color: Colors.white,
