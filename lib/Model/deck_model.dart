@@ -64,4 +64,11 @@ class DeckModel {
     File deck = File(decksDir.path + "/" + deckName);
     deck.delete(recursive: false);
   }
+
+  Future<void> writeDeckToStorage(Deck deck) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory decksDir = Directory("${appDocDir.path}/decks");
+    File deckFile = File(decksDir.path + "/" + deck.name! + ".json");
+    deckFile.writeAsString(json.encode(deck));
+  }
 }

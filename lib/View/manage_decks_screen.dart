@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:memboost/ClassModels/deck.dart';
+import 'package:memboost/View/create_new_deck_dialog.dart';
 import 'package:memboost/ViewModel/decks_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -72,20 +72,38 @@ class _MyDecksTab extends State<MyDecksTab> with AutomaticKeepAliveClientMixin {
     }
   }
 
+  void createNewDeck() {
+    showDialog(
+        barrierDismissible: false,
+        useRootNavigator: false,
+        context: context,
+        builder: (context) {
+          return CreateNewDeckDialog(key: UniqueKey());
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     Provider.of<DecksViewModel>(context, listen: false).getDownloadedDecks();
-    return Consumer<DecksViewModel>(builder: (context, viewModel, child) {
-      buildDeckTilesFromDecks(viewModel.downloadedDecks);
-      return GridView.count(
-        padding: const EdgeInsets.all(10),
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        children: [...decks],
-      );
-    });
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          createNewDeck();
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+        buildDeckTilesFromDecks(viewModel.downloadedDecks);
+        return GridView.count(
+          padding: const EdgeInsets.all(10),
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          children: [...decks],
+        );
+      }),
+    );
   }
 }
 
