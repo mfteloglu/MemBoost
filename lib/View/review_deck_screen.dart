@@ -142,6 +142,29 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 },
               ),
             ),
+            Wrap(
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      controller.triggerLeft();
+                    },
+                    child: const Text('Not Remember'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    )
+                ),
+                const SizedBox(width: 50),
+                ElevatedButton(
+                    onPressed: (){
+                      controller.triggerRight();
+                    },
+                    child: const Text('Remember'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    )
+                )
+              ],
+            )
           ]),
         );
       },
