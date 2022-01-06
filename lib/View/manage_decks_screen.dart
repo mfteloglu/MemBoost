@@ -130,27 +130,31 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
     super.build(context);
     Provider.of<DecksViewModel>(context, listen: false)
         .getListOfDecksOnServer();
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
-          Consumer<DecksViewModel>(builder: (context, viewModel, child) {
-            decks = viewModel.decksOnServer;
-            return Expanded(
-              child: GridView.count(
-                  padding: const EdgeInsets.all(10),
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: [
-                    for (var deck in decks)
-                      DeckTileOnBackend(deck.toString(), key: UniqueKey()),
-                    // list all decks in storage
-                  ]),
-            );
-          })
-        ]);
+    return RefreshIndicator(
+        child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
+              Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+                decks = viewModel.decksOnServer;
+                return Expanded(
+                  child: GridView.count(
+                      padding: const EdgeInsets.all(10),
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        for (var deck in decks)
+                          DeckTileOnBackend(deck.toString(), key: UniqueKey()),
+                        // list all decks in storage
+                      ]),
+                );
+              })
+            ]),
+        onRefresh: () async {
+          Provider.of<DecksViewModel>(context, listen:false).getListOfDecksOnServer();
+        });
   }
 }
 

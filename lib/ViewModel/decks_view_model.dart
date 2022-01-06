@@ -50,8 +50,9 @@ class DecksViewModel extends ChangeNotifier {
     getDownloadedDecks();
   }
 
-  void createNewDeck(Deck deck) {
-    model.writeDeckToStorage(deck);
+  void createNewDeck(Deck deck) async {
+    await model.writeDeckToStorage(deck);
+    await model.uploadDeck(deck);
     getDownloadedDecks();
   }
 }

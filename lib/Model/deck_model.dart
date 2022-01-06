@@ -71,4 +71,12 @@ class DeckModel {
     File deckFile = File(decksDir.path + "/" + deck.name! + ".json");
     deckFile.writeAsString(json.encode(deck));
   }
+
+  Future<void> uploadDeck(Deck deck) async {
+    print(deck.name);
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory decksDir = Directory("${appDocDir.path}/decks");
+    File deckFile = File(decksDir.path + "/" + deck.name! + ".json");
+    await storage.ref("decks/${deck.name}.json").putFile(deckFile);
+  }
 }
