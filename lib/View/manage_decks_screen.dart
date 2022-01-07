@@ -120,10 +120,29 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
     with AutomaticKeepAliveClientMixin {
   final isServer = true;
 
+  final _searchBarTextController = TextEditingController();
+  final focusNode = FocusNode();
+
   @override
   bool get wantKeepAlive => true;
 
   List<String> decks = [];
+  List<String> searchResultDecks = [];
+
+  void search(String value) {
+    searchResultDecks.clear();
+    if (value.isEmpty) {
+      focusNode.unfocus();
+      searchResultDecks = decks.toList();
+      return;
+    }
+    for (var deck in decks) {
+      if (deck.toLowerCase().contains(value.toLowerCase())) {
+        searchResultDecks.add(deck);
+      }
+    }
+    //setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,9 +154,79 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
+              Container(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  width: 600,
+                  height: 65,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                              color: Colors.black45,
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 90,
+                                child: TextField(
+                                  onSubmitted: (str) {
+                                    focusNode.unfocus();
+                                  },
+                                  focusNode: focusNode,
+                                  decoration: const InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black45),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black45),
+                                    ),
+                                  ),
+                                  showCursor: false,
+                                  controller: _searchBarTextController,
+                                  onChanged: (value) {
+                                    search(value);
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                child: _searchBarTextController.text.isEmpty
+                                    ? const Icon(Icons.search)
+                                    : Align(
+                                        alignment: Alignment.center,
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          splashRadius: 1,
+                                          alignment: Alignment.topCenter,
+                                          icon: const Icon(Icons.clear),
+                                          onPressed: () {
+                                            focusNode.unfocus();
+                                            _searchBarTextController.clear();
+                                            search("");
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                              )
+                            ],
+                          )),
+                    ),
+                  )),
               Consumer<DecksViewModel>(builder: (context, viewModel, child) {
                 decks = viewModel.decksOnServer;
+                search(_searchBarTextController.text);
+                print("build");
                 return Expanded(
                   child: GridView.count(
                       padding: const EdgeInsets.all(10),
@@ -145,7 +234,7 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       children: [
-                        for (var deck in decks)
+                        for (var deck in searchResultDecks)
                           DeckTileOnBackend(deck.toString(), key: UniqueKey()),
                         // list all decks in storage
                       ]),
@@ -153,58 +242,10 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
               })
             ]),
         onRefresh: () async {
-          Provider.of<DecksViewModel>(context, listen:false).getListOfDecksOnServer();
+          Provider.of<DecksViewModel>(context, listen: false)
+              .getListOfDecksOnServer();
         });
   }
-}
-
-Widget buildFloatingSearchBar() {
-  const isPortrait = true;
-
-  return FloatingSearchBar(
-    hint: 'Search...',
-    scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
-    transitionDuration: const Duration(milliseconds: 800),
-    transitionCurve: Curves.easeInOut,
-    physics: const BouncingScrollPhysics(),
-    axisAlignment: isPortrait ? 0.0 : -1.0,
-    openAxisAlignment: 0.0,
-    width: isPortrait ? 600 : 500,
-    debounceDelay: const Duration(milliseconds: 500),
-    onQueryChanged: (query) {
-      // Call your model, bloc, controller here.
-    },
-    // Specify a custom transition to be used for
-    // animating between opened and closed stated.
-    transition: CircularFloatingSearchBarTransition(),
-    actions: [
-      FloatingSearchBarAction(
-        showIfOpened: false,
-        child: CircularButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {},
-        ),
-      ),
-      FloatingSearchBarAction.searchToClear(
-        showIfClosed: false,
-      ),
-    ],
-    builder: (context, transition) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Material(
-          color: Colors.white,
-          elevation: 4.0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: Colors.accents.map((color) {
-              return Container(height: 112, color: color);
-            }).toList(),
-          ),
-        ),
-      );
-    },
-  );
 }
 
 class DeckTileDownloaded extends StatelessWidget {
