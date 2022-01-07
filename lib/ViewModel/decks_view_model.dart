@@ -34,9 +34,15 @@ class DecksViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // This function updates the deck on the phones storage
+  void updateCurrentDeck(Deck deckToUpdate) async {
+    await model.updateCurrentDeck(deckToUpdate);
+    notifyListeners();
+  }
+
   void deleteDeck(String name) async {
     await model.deleteDeckFromStorage(name + ".json");
-    if(name == currentSelectedDeck?.name) {
+    if (name == currentSelectedDeck?.name) {
       if (downloadedDecks.isNotEmpty) {
         currentSelectedDeck = downloadedDecks.first;
       } else {
