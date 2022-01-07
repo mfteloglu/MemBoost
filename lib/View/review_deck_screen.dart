@@ -146,24 +146,30 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
             Wrap(
               children: [
                 ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       controller.triggerLeft();
+                      deck?.cards[counter].onButtonAgain();
+                      Provider.of<DecksViewModel>(context, listen: false)
+                          .updateCurrentDeck(deck!);
                     },
                     child: const Text('Not Remember'),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                    )
-                ),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                    )),
                 const SizedBox(width: 50),
                 ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       controller.triggerRight();
+                      deck?.cards[counter].onButtonGood();
+                      Provider.of<DecksViewModel>(context, listen: false)
+                          .updateCurrentDeck(deck!);
                     },
                     child: const Text('Remember'),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                    )
-                )
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                    ))
               ],
             )
           ]),

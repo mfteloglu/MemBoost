@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:memboost/ClassModels/deck.dart';
@@ -63,6 +64,7 @@ class DeckModel {
     Directory decksDir = Directory("${appDocDir.path}/decks");
     File deck = File(decksDir.path + "/" + deckName);
     deck.delete(recursive: false);
+    getAllDecksFromStorage();
   }
 
   Future<void> updateCurrentDeck(Deck deckToUpdate) async {
@@ -73,7 +75,8 @@ class DeckModel {
     File deck = File(decksDir.path + "/" + deckName);
     //deck.delete(recursive: false);
     deck.writeAsString(json.encode(deckToUpdate.toJson()));
-    print("worked");
+    getAllDecksFromStorage();
+    // print(json.encode(deckToUpdate.toJson()));
   }
 
   Future<void> writeDeckToStorage(Deck deck) async {
