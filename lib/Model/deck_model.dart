@@ -64,4 +64,15 @@ class DeckModel {
     File deck = File(decksDir.path + "/" + deckName);
     deck.delete(recursive: false);
   }
+
+  Future<void> updateCurrentDeck(Deck deckToUpdate) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory decksDir = Directory("${appDocDir.path}/decks");
+    if (deckToUpdate.name == null) return;
+    String deckName = deckToUpdate.name.toString();
+    File deck = File(decksDir.path + "/" + deckName);
+    //deck.delete(recursive: false);
+    deck.writeAsString(json.encode(deckToUpdate.toJson()));
+    print("worked");
+  }
 }
