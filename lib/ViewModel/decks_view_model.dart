@@ -38,7 +38,7 @@ class DecksViewModel extends ChangeNotifier {
   // This function updates the deck on the phones storage
   void updateCurrentDeck(Deck deckToUpdate) async {
     await model.updateCurrentDeck(deckToUpdate);
-    notifyListeners();
+    getDownloadedDecks();
   }
 
   void deleteDeck(String name) async {

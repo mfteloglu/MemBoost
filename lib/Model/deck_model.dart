@@ -70,12 +70,8 @@ class DeckModel {
   Future<void> updateCurrentDeck(Deck deckToUpdate) async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     Directory decksDir = Directory("${appDocDir.path}/decks");
-    if (deckToUpdate.name == null) return;
-    String deckName = deckToUpdate.name.toString();
-    File deck = File(decksDir.path + "/" + deckName);
-    //deck.delete(recursive: false);
+    File deck = File(decksDir.path + "/" + deckToUpdate.name! + ".json");
     deck.writeAsString(json.encode(deckToUpdate.toJson()));
-    getAllDecksFromStorage();
     // print(json.encode(deckToUpdate.toJson()));
   }
 
