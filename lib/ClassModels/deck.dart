@@ -25,6 +25,7 @@ class Deck {
     data['cards'] = cards.map((v) => v.toJson()).toList();
     return data;
   }
+
 }
 
 class Flashcard {

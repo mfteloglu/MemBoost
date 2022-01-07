@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:memboost/ClassModels/deck.dart';
+import 'package:memboost/View/create_new_deck_dialog.dart';
 import 'package:memboost/ViewModel/decks_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -72,20 +72,38 @@ class _MyDecksTab extends State<MyDecksTab> with AutomaticKeepAliveClientMixin {
     }
   }
 
+  void createNewDeck() {
+    showDialog(
+        barrierDismissible: false,
+        useRootNavigator: false,
+        context: context,
+        builder: (context) {
+          return CreateNewDeckDialog(key: UniqueKey());
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     Provider.of<DecksViewModel>(context, listen: false).getDownloadedDecks();
-    return Consumer<DecksViewModel>(builder: (context, viewModel, child) {
-      buildDeckTilesFromDecks(viewModel.downloadedDecks);
-      return GridView.count(
-        padding: const EdgeInsets.all(10),
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        children: [...decks],
-      );
-    });
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          createNewDeck();
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+        buildDeckTilesFromDecks(viewModel.downloadedDecks);
+        return GridView.count(
+          padding: const EdgeInsets.all(10),
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          children: [...decks],
+        );
+      }),
+    );
   }
 }
 
@@ -112,27 +130,31 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
     super.build(context);
     Provider.of<DecksViewModel>(context, listen: false)
         .getListOfDecksOnServer();
-    return Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
-          Consumer<DecksViewModel>(builder: (context, viewModel, child) {
-            decks = viewModel.decksOnServer;
-            return Expanded(
-              child: GridView.count(
-                  padding: const EdgeInsets.all(10),
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  children: [
-                    for (var deck in decks)
-                      DeckTileOnBackend(deck.toString(), key: UniqueKey()),
-                    // list all decks in storage
-                  ]),
-            );
-          })
-        ]);
+    return RefreshIndicator(
+        child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(width: 600, height: 54, child: buildFloatingSearchBar()),
+              Consumer<DecksViewModel>(builder: (context, viewModel, child) {
+                decks = viewModel.decksOnServer;
+                return Expanded(
+                  child: GridView.count(
+                      padding: const EdgeInsets.all(10),
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        for (var deck in decks)
+                          DeckTileOnBackend(deck.toString(), key: UniqueKey()),
+                        // list all decks in storage
+                      ]),
+                );
+              })
+            ]),
+        onRefresh: () async {
+          Provider.of<DecksViewModel>(context, listen:false).getListOfDecksOnServer();
+        });
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:memboost/Model/deck_model.dart';
 import 'package:memboost/ClassModels/deck.dart';
@@ -42,6 +44,11 @@ class DecksViewModel extends ChangeNotifier {
 
   void deleteDeck(String name) async {
     await model.deleteDeckFromStorage(name + ".json");
+<<<<<<< HEAD
+=======
+    //change the current selected deck if it was the one deleted
+    downloadedDecks.removeWhere((element) => element.name == name);
+>>>>>>> c34f6f22926f10b4bed47a749140aa578331e457
     if (name == currentSelectedDeck?.name) {
       if (downloadedDecks.isNotEmpty) {
         currentSelectedDeck = downloadedDecks.first;
@@ -49,6 +56,12 @@ class DecksViewModel extends ChangeNotifier {
         currentSelectedDeck = null;
       }
     }
+    getDownloadedDecks();
+  }
+
+  void createNewDeck(Deck deck) async {
+    await model.writeDeckToStorage(deck);
+    await model.uploadDeck(deck);
     getDownloadedDecks();
   }
 }

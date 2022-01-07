@@ -73,6 +73,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 minWidth: MediaQuery.of(context).size.width * 0.8,
                 minHeight: MediaQuery.of(context).size.width * 0.8,
                 cardBuilder: (context, index) => FlipCard(
+                    key: Key('flip$index'),
                     direction: FlipDirection.VERTICAL,
                     front: Card(
                       color: Colors.white,
@@ -142,6 +143,29 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 },
               ),
             ),
+            Wrap(
+              children: [
+                ElevatedButton(
+                    onPressed: (){
+                      controller.triggerLeft();
+                    },
+                    child: const Text('Not Remember'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                    )
+                ),
+                const SizedBox(width: 50),
+                ElevatedButton(
+                    onPressed: (){
+                      controller.triggerRight();
+                    },
+                    child: const Text('Remember'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    )
+                )
+              ],
+            )
           ]),
         );
       },

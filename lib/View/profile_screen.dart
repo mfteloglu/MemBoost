@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -110,7 +112,35 @@ class _ProfileScreenState extends State<ProfileScreen>
               //margin: const EdgeInsets.only(top: 30.0),
               child: OutlinedButton(
                 onPressed: () {
-                  debugPrint('Received click to MANAGE SUBSCRIPTION button');
+                  showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text('Your current subscription',
+                                      textAlign: TextAlign.center),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('-Monthly Payment \n -62 days left \n ',
+                                  textAlign: TextAlign.center),
+                            ElevatedButton(
+                              onPressed: () => launch('https://www.itu.edu.tr/'),
+                              child: Row( // Replace with a Row for horizontal icon + text
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.link),
+                                  Text("  Extend")
+                                ],
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                            )
+                          ],
+                        )
+                      )
+                  );
                 },
                 child: const Text('MANAGE SUBSCRIPTION'),
               )),
