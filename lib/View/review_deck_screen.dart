@@ -152,10 +152,10 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                       Provider.of<DecksViewModel>(context, listen: false)
                           .updateCurrentDeck(deck!);
                     },
-                    child: const Text('Not Remember'),
+                    child: const Text('AGAIN'),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green),
+                          MaterialStateProperty.all<Color>(Colors.red),
                     )),
                 const SizedBox(width: 50),
                 ElevatedButton(
@@ -165,10 +165,10 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                       Provider.of<DecksViewModel>(context, listen: false)
                           .updateCurrentDeck(deck!);
                     },
-                    child: const Text('Remember'),
+                    child: const Text('GOOD'),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
+                          MaterialStateProperty.all<Color>(Colors.green),
                     ))
               ],
             )
