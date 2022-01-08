@@ -76,6 +76,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: lib/assets/fonts/Corporate A Bold.otf
+        - asset: lib/assets/fonts/Corporate A Light.ttf
+
+
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

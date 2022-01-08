@@ -226,7 +226,6 @@ class _BrowseDecksTab extends State<BrowseDecksTab>
               Consumer<DecksViewModel>(builder: (context, viewModel, child) {
                 decks = viewModel.decksOnServer;
                 search(_searchBarTextController.text);
-                print("build");
                 return Expanded(
                   child: GridView.count(
                       padding: const EdgeInsets.all(10),
@@ -260,10 +259,10 @@ class DeckTileDownloaded extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(deck.name!),
+            Text(deck.name!, textAlign: TextAlign.center,),
             Expanded(
                 child: Align(
-                    alignment: Alignment.bottomRight,
+                    alignment: Alignment.bottomLeft,
                     child: Row(
                       children: [
                         IconButton(
@@ -276,7 +275,7 @@ class DeckTileDownloaded extends StatelessWidget {
                         ),
                         IconButton(
                           alignment: Alignment.bottomRight,
-                          icon: const Icon(Icons.delete),
+                          icon: const Icon(Icons.delete,),
                           onPressed: () {
                             Provider.of<DecksViewModel>(context, listen: false)
                                 .deleteDeck(deck.name!);
@@ -302,7 +301,7 @@ class DeckTileOnBackend extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(name),
+            Text(name,textAlign: TextAlign.center),
             Expanded(
                 child: Align(
                     alignment: Alignment.bottomRight,
