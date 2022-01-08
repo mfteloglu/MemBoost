@@ -25,7 +25,6 @@ class Deck {
     data['cards'] = cards.map((v) => v.toJson()).toList();
     return data;
   }
-
 }
 
 class Flashcard {
@@ -40,6 +39,7 @@ class Flashcard {
   int? scheduledDay;
   int? scheduledMonth;
   int? scheduledYear;
+  int? scheduledMinutes;
   int currentIntervalDays = 1;
 
   // constructor
@@ -56,6 +56,7 @@ class Flashcard {
     scheduledDay = json['scheduledDay'];
     scheduledMonth = json['scheduledMonth'];
     scheduledYear = json['scheduledYear'];
+    scheduledMinutes = json['scheduledMinutes'];
     currentIntervalDays = json['currentIntervalDays'];
   }
 
@@ -71,6 +72,7 @@ class Flashcard {
     data['scheduledDay'] = scheduledDay;
     data['scheduledMonth'] = scheduledMonth;
     data['scheduledYear'] = scheduledYear;
+    data['scheduledMinutes'] = scheduledMinutes;
     data['currentIntervalDays'] = currentIntervalDays;
     return data;
   }
@@ -81,16 +83,34 @@ class Flashcard {
     if (status == "first") {
       status = "second";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the second learning phase
     else if (status == "second") {
       status = "third";
       afterXMinutes = 5;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 5));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the third learning phase
     else if (status == "third") {
       status = "young";
       afterXMinutes = 60;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(hours: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the young phase
     else if (status == "young") {
@@ -100,6 +120,7 @@ class Flashcard {
       scheduledDay = newDate.day;
       scheduledMonth = newDate.month;
       scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the matured phase
     else if (status == "matured") {
@@ -109,11 +130,18 @@ class Flashcard {
       scheduledDay = newDate.day;
       scheduledMonth = newDate.month;
       scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the relearning1 phase
     else if (status == "relearning1") {
       status = "relearning2";
       afterXMinutes = 60;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(hours: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
     // if the card is in the relearning2 phase
     else if (status == "relearning2") {
@@ -124,6 +152,7 @@ class Flashcard {
       scheduledDay = newDate.day;
       scheduledMonth = newDate.month;
       scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
   }
 
@@ -131,23 +160,65 @@ class Flashcard {
   void onButtonAgain() {
     if (status == "first") {
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "second") {
       status = "first";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "third") {
       status = "first";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "young") {
       status = "first";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "matured") {
       status = "relearning1";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "relearning1") {
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     } else if (status == "relearning2") {
       status = "relearning1";
       afterXMinutes = 1;
+      var today = DateTime.now();
+      var newDate = today.add(const Duration(minutes: 1));
+      scheduledDay = newDate.day;
+      scheduledMonth = newDate.month;
+      scheduledYear = newDate.year;
+      scheduledMinutes = newDate.minute;
     }
   }
 }
