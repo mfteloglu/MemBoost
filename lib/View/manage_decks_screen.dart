@@ -276,7 +276,7 @@ class DeckTileDownloaded extends StatelessWidget {
                         ),
                         IconButton(
                           alignment: Alignment.bottomRight,
-                          icon: const Icon(Icons.settings),
+                          icon: const Icon(Icons.delete),
                           onPressed: () {
                             Provider.of<DecksViewModel>(context, listen: false)
                                 .deleteDeck(deck.name!);
