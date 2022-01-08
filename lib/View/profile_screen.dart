@@ -36,18 +36,33 @@ class _ProfileScreenState extends State<ProfileScreen>
           Container(
             //padding: const EdgeInsets.all(10.0),
             margin: const EdgeInsets.only(top: 15.0),
-            child: Image.network(Provider.of<GoogleSignInProvider>(context, listen: false)
-                .user
-                .photoUrl!,
-                height: 50, fit: BoxFit.fill),
+            child: Provider.of<GoogleSignInProvider>(context, listen: false)
+                        .user
+                        ?.photoUrl ==
+                    null
+                ? Image.asset(
+                    "lib/assets/user-photo.png",
+                    height: 50,
+                  )
+                : Image.network(
+                    (Provider.of<GoogleSignInProvider>(context, listen: false)
+                        .user
+                        ?.photoUrl!)!,
+                    height: 50,
+                    fit: BoxFit.fill),
           ),
           Container(
             padding: const EdgeInsets.all(10.0),
             //margin: const EdgeInsets.only(top: 30.0),
             child: Text(
               Provider.of<GoogleSignInProvider>(context, listen: false)
-                  .user
-                  .displayName!,
+                          .user
+                          ?.displayName ==
+                      null
+                  ? ""
+                  : (Provider.of<GoogleSignInProvider>(context, listen: false)
+                      .user
+                      ?.displayName!)!,
               style: TextStyle(fontSize: 16),
             ),
           ),
