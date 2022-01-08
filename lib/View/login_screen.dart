@@ -47,11 +47,15 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SignInButton(
                     buttonType: ButtonType.google,
-                    onPressed: () {
+                    onPressed: () async {
                       final provider = Provider.of<GoogleSignInProvider>(
                           context,
                           listen: false);
-                      provider.googleLogin();
+                      await provider.googleLogin();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
                     },
                   ),
                   SignInButton(

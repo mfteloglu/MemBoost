@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:memboost/Model/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -35,14 +36,18 @@ class _ProfileScreenState extends State<ProfileScreen>
           Container(
             //padding: const EdgeInsets.all(10.0),
             margin: const EdgeInsets.only(top: 15.0),
-            child: Image.asset("lib/assets/user-photo.png",
+            child: Image.network(Provider.of<GoogleSignInProvider>(context, listen: false)
+                .user
+                .photoUrl!,
                 height: 50, fit: BoxFit.fill),
           ),
           Container(
             padding: const EdgeInsets.all(10.0),
             //margin: const EdgeInsets.only(top: 30.0),
-            child: const Text(
-              "Name Surname",
+            child: Text(
+              Provider.of<GoogleSignInProvider>(context, listen: false)
+                  .user
+                  .displayName!,
               style: TextStyle(fontSize: 16),
             ),
           ),
@@ -115,32 +120,32 @@ class _ProfileScreenState extends State<ProfileScreen>
                   showDialog(
                       context: context,
                       builder: (_) => AlertDialog(
-                        title: Text('Your current subscription',
-                                      textAlign: TextAlign.center),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('-Monthly Payment \n -62 days left \n ',
+                          title: Text('Your current subscription',
+                              textAlign: TextAlign.center),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('-Monthly Payment \n -62 days left \n ',
                                   textAlign: TextAlign.center),
-                            ElevatedButton(
-                              onPressed: () => launch('https://www.itu.edu.tr/'),
-                              child: Row( // Replace with a Row for horizontal icon + text
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.link),
-                                  Text("  Extend")
-                                ],
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.blue,
-                              ),
-                            )
-                          ],
-                        )
-                      )
-                  );
+                              ElevatedButton(
+                                onPressed: () =>
+                                    launch('https://www.itu.edu.tr/'),
+                                child: Row(
+                                  // Replace with a Row for horizontal icon + text
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(Icons.link),
+                                    Text("  Extend")
+                                  ],
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue,
+                                ),
+                              )
+                            ],
+                          )));
                 },
                 child: const Text('MANAGE SUBSCRIPTION'),
               )),
