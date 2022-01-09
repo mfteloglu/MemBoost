@@ -36,9 +36,20 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
       builder: (context, viewModel, child) {
         var oldDeckName = deck?.name;
         deck = viewModel.currentSelectedDeck;
+        ///////////////////////////////////
+        // deck!.enqueueNewCards();
+        // deck!.enqueueReviewCards();
+        // deck!.addTwoQueues();
+        // deck!.reQueue();
+        //////////////////////////////////7
         if (deck == null) {
           if (viewModel.downloadedDecks.isNotEmpty) {
             deck = viewModel.downloadedDecks.first;
+            deck!.giveNewCardsDate();
+            deck!.enqueueNewCards();
+            deck!.enqueueReviewCards();
+            deck!.addTwoQueues();
+            //deck!.printTodaysQueue();
           } else {
             deck = Deck("", "", []);
           }
@@ -55,6 +66,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
             const SizedBox(height: 15),
             Text(
               "$counter" "/" "${deck?.cards.length}",
+              //"$counter",
             ),
             const SizedBox(height: 15),
             SizedBox(
@@ -65,6 +77,7 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 swipeEdgeVertical: 10.0,
                 orientation: AmassOrientation.BOTTOM,
                 totalNum: (deck?.cards.length)!,
+                //totalNum: 100,
                 deck: deck,
                 //stackNum: deck?.cards.length,
                 swipeEdge: 4.0,
@@ -81,7 +94,8 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                           borderRadius: BorderRadius.circular(5)),
                       child: Center(
                           child: Text(
-                        (deck?.cards[index].word)!,
+                        //(deck?.cards[index].word)!,
+                        (deck?.todaysQueue[0].word)!,
                         textScaleFactor: 2,
                       )),
                     ),
@@ -99,7 +113,8 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    (deck?.cards[index].explanation)!,
+                                    //(deck?.cards[index].explanation)!,
+                                    (deck?.todaysQueue[0].explanation)!,
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -148,7 +163,12 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 ElevatedButton(
                     onPressed: () {
                       controller.triggerLeft();
-                      deck?.cards[counter].onButtonAgain();
+                      // deck?.cards[counter].onButtonAgain();
+                      deck?.todaysQueue[0].onButtonAgain();
+                      deck!.enqueueNewCards();
+                      deck!.enqueueReviewCards();
+                      deck!.addTwoQueues();
+                      deck?.reQueue();
                       Provider.of<DecksViewModel>(context, listen: false)
                           .updateCurrentDeck(deck!);
                     },
@@ -161,7 +181,14 @@ class _ReviewDeckScreenState extends State<ReviewDeckScreen>
                 ElevatedButton(
                     onPressed: () {
                       controller.triggerRight();
-                      deck?.cards[counter].onButtonGood();
+                      // deck?.cards[counter].onButtonGood();
+                      deck?.todaysQueue[0].onButtonGood();
+                      deck!.enqueueNewCards();
+                      deck!.enqueueReviewCards();
+                      deck!.addTwoQueues();
+                      deck?.reQueue();
+                      deck?.printTodaysQueue();
+                      deck?.printCards();
                       Provider.of<DecksViewModel>(context, listen: false)
                           .updateCurrentDeck(deck!);
                     },
